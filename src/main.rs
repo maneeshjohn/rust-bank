@@ -15,6 +15,16 @@ impl Account {
             balance
         };
     }
+
+    fn deposit(&mut self, amount: u32) -> u32 {
+        self.balance += amount;
+        return self.balance;
+    }
+
+    fn withdraw(&mut self, amount: u32) -> u32 {
+        self.balance -= amount;
+        return self.balance;
+    }
 }
 
 #[derive(Debug)]
@@ -28,11 +38,18 @@ impl Bank {
             accounts: vec![]
         }
     }
+
+    fn add_account(&mut self, account: Account) {
+        self.accounts.push(account);
+    }
 }
 
 fn main() {
-    let account = Account::new("test".to_owned(), 1000);
-    let bank = Bank::new();
+    let mut account = Account::new("Dora".to_owned(), 1000);
+    let mut bank = Bank::new();
+    account.deposit(100);
+    account.withdraw(50);
+    bank.add_account(account);
 
-    println!("Bank: {:?}, Account: {:?}", bank, account);
+    println!("Bank: {:#?}", bank);
 }
