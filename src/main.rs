@@ -25,6 +25,11 @@ impl Account {
         self.balance -= amount;
         return self.balance;
     }
+
+    fn summary(&self) -> String {
+        let message = format!("Hi {}, your balance is {}", self.holder, self.balance);
+        return message;
+    }
 }
 
 #[derive(Debug)]
@@ -42,14 +47,26 @@ impl Bank {
     fn add_account(&mut self, account: Account) {
         self.accounts.push(account);
     }
+
+    fn total_balance(&self) -> u32 {
+        return self.accounts.iter()
+            .map(|account| account.balance)
+            .sum();
+    }
+
+    fn summary(&self) -> Vec<String> {
+        return self.accounts.iter()
+            .map(|account| format!("{}: {}", account.holder, account.balance))
+            .collect();
+    }
 }
 
 fn main() {
-    let mut account = Account::new("Dora".to_owned(), 1000);
+    let account = Account::new("Dora".to_owned(), 1000);
+    let account2 = Account::new("Tom".to_owned(), 500);
     let mut bank = Bank::new();
-    account.deposit(100);
-    account.withdraw(50);
     bank.add_account(account);
+    bank.add_account(account2);
 
-    println!("Bank: {:#?}", bank);
+    println!("Bank: {:#?}", bank.summary());
 }
